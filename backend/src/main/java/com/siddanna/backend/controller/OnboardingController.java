@@ -39,13 +39,12 @@ public class OnboardingController {
         this.repo = repo;
     }
 
-    // ✅ CREATE
+    
     @PostMapping
     public Onboarding save(@Valid @RequestBody Onboarding data) {
         return repo.save(data);
     }
 
-    // ✅ READ (Pagination + Date Filter + Soft Delete)
     @GetMapping
     public Page<Onboarding> getAll(
             Pageable pageable,
@@ -65,7 +64,7 @@ public class OnboardingController {
         return repo.findByDeletedFalse(pageable);
     }
 
-    // ✅ GET BY ID
+    
     @GetMapping("/{id}")
     public ResponseEntity<Onboarding> getById(@PathVariable Long id) {
         return repo.findById(id)
@@ -73,7 +72,7 @@ public class OnboardingController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // ✅ UPDATE
+    
     @PutMapping("/{id}")
     public Onboarding update(@PathVariable Long id, @RequestBody Onboarding data) {
         Onboarding existing = repo.findById(id).orElseThrow();
@@ -86,7 +85,7 @@ public class OnboardingController {
         return repo.save(existing);
     }
 
-    // ✅ DELETE (Soft Delete)
+    
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         Onboarding obj = repo.findById(id).orElseThrow();
@@ -94,7 +93,7 @@ public class OnboardingController {
         repo.save(obj);
     }
 
-    // ✅ SEARCH
+    
     @GetMapping("/search")
     public List<Onboarding> search(@RequestParam String q) {
         return repo.findAll().stream()
@@ -103,7 +102,7 @@ public class OnboardingController {
                 .toList();
     }
 
-    // ✅ STATS API
+    
     @GetMapping("/stats")
     public Map<String, Long> getStats() {
 
@@ -119,7 +118,7 @@ public class OnboardingController {
         return stats;
     }
 
-    // 🔥 CSV EXPORT
+    
     @GetMapping("/export")
     public void exportCsv(HttpServletResponse response) throws Exception {
 
@@ -129,10 +128,10 @@ public class OnboardingController {
         List<Onboarding> list = repo.findAll();
         PrintWriter writer = response.getWriter();
 
-        // header
+        
         writer.println("ID,Name,Email,Role");
 
-        // data
+        
         for (Onboarding o : list) {
             writer.println(
                     o.getId() + "," +
@@ -146,21 +145,21 @@ public class OnboardingController {
         writer.close();
     }
 
-    // 🔥 FILE UPLOAD (FINAL FIXED VERSION)
+    
     @PostMapping(value = "/upload", consumes = "multipart/form-data")
     public String uploadFile(@RequestParam("file") MultipartFile file) {
 
-        // ❌ empty
+        
         if (file.isEmpty()) {
             throw new RuntimeException("File is empty");
         }
 
-        // ❌ size > 2MB
+        
         if (file.getSize() > 2 * 1024 * 1024) {
             throw new RuntimeException("File too large (max 2MB)");
         }
 
-        // ❌ type check
+        
         String type = file.getContentType();
         if (type == null || 
             (!type.equals("image/png") && !type.equals("image/jpeg"))) {

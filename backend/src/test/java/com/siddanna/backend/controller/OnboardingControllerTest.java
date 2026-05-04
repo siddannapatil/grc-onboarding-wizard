@@ -1,18 +1,20 @@
 package com.siddanna.backend.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.siddanna.backend.model.Onboarding;
-import com.siddanna.backend.repository.OnboardingRepository;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.siddanna.backend.model.Onboarding;
+import com.siddanna.backend.repository.OnboardingRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -27,7 +29,7 @@ public class OnboardingControllerTest {
     @Autowired
     private OnboardingRepository repo;
 
-    // ✅ CREATE
+    
     @Test
     void testCreate() throws Exception {
         Onboarding obj = new Onboarding();
@@ -42,14 +44,14 @@ public class OnboardingControllerTest {
                 .andExpect(status().isOk());
     }
 
-    // ✅ GET ALL
+    
     @Test
     void testGetAll() throws Exception {
         mockMvc.perform(get("/onboarding"))
                 .andExpect(status().isOk());
     }
 
-    // ✅ UPDATE
+    
     @Test
     void testUpdate() throws Exception {
         Onboarding obj = new Onboarding();
@@ -67,7 +69,7 @@ public class OnboardingControllerTest {
                 .andExpect(status().isOk());
     }
 
-    // ✅ DELETE
+    
     @Test
     void testDelete() throws Exception {
         Onboarding obj = new Onboarding();
@@ -82,14 +84,14 @@ public class OnboardingControllerTest {
                 .andExpect(status().isOk());
     }
 
-    // ❌ 404 - GET BY ID
+    
     @Test
     void testGetById_NotFound() throws Exception {
         mockMvc.perform(get("/onboarding/999999"))
                 .andExpect(status().isNotFound());
     }
 
-    // ❌ 404 - UPDATE
+    
     @Test
     void testUpdate_NotFound() throws Exception {
         Onboarding obj = new Onboarding();
@@ -103,14 +105,14 @@ public class OnboardingControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    // ❌ 404 - DELETE
+    
     @Test
     void testDelete_NotFound() throws Exception {
         mockMvc.perform(delete("/onboarding/999999"))
                 .andExpect(status().isNotFound());
     }
 
-    // ❌ 400 - INVALID INPUT
+    
     @Test
     void testCreate_InvalidInput() throws Exception {
         mockMvc.perform(post("/onboarding")
@@ -119,7 +121,7 @@ public class OnboardingControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    // ❌ 405 - WRONG METHOD
+    
     @Test
     void testWrongMethod() throws Exception {
         mockMvc.perform(put("/onboarding"))

@@ -14,7 +14,6 @@ public class DataSeeder {
     CommandLineRunner seedData(OnboardingRepository repo) {
         return args -> {
 
-            // avoid duplicate seeding
             if (repo.count() > 0) return;
 
             String[] names = {
